@@ -1,0 +1,125 @@
+- How to list file in staging area:
+git ls-files
+
+- How to undo unstaged file:
+git checkout filename
+
+- How to undo staged file in two steps:
+git restore --staged filename   # redo add (unstage)
+git checkout filename           # now do it as unstaged file
+
+- How to undo commit:
+git reset --soft HEAD~1  # go back 1 commit (undo commit command)
+git reset HEAD~1         # undo add(aka unstaged) + commit commands
+git reset --hard HEAD~1  # undo commit, undo add (unstaged), remove changes in staging step
+
+- How to delete a branch:
+git branch -d branchname
+git branch -D branchname
+
+- How to commit from detachedHEAD:
+git branch <new-branch-name> <detach-head branch ID>
+
+- How to clean to initial state:
+git clean -df (Delete untracked file)
+
+- How to stash unstaged, uncommited
+git stash push -m "message"         # Best
+git stash
+git stash list                      # show stash list
+git stash apply <number in list>    # apply selected stash
+git stash pop   <number in list>    # Apply stash to project 
+git stash drop  <number in list>    # Remove selected stash from the list
+git stash clear                     # Clear the stash list
+
+- How to undo "git reset --hard HEAD~1":
+git reflog
+# f906237 (HEAD -> master) HEAD@{0}: reset: moving to HEAD~1
+# 5d65014 HEAD@{1}: commit: add file2
+# f906237 (HEAD -> master) HEAD@{2}: commit: add 3rd feature
+
+git reset --hard 5d65014
+
+- How to merge master branch and feature branch:
+# Fast-forward merge is default: Used if no additional commit in master after branch was created
+git merge feature: Fast-forward merge: add all the commit of the feature branch to master
+git merge --squash feature: add all the edits in to one and merge, no commit added
+
+# Recursive merge: Used when additional commit in both master and feature after branch was created
+# A merge commit is automatically added
+git merge --no-ff feature
+
+- Rebase command: make new commit in master base for commit in feature branch
+# rebase does not move commits, it creates commits (i.e commits id changes)
+# in the feature branch: "git rebase master"
+
+- Solve merge conflic:
+git log --merge         # Show merge conflic
+git diff
+
+# cherry-picking:
+# example:
+git cherry-pick 2ad10456dfa12002b6e88c1a5ecd97d79d759334
+
+
+- Using tag
+git tag                                            # Show the tag list
+git tag <tag name> <commit id>                     # Set tag to a commit - LightWeight tag
+git tag -d <tag name>                              # Delete a tag   
+git tag -a <tag name> <commit id> -m "message"     # HeavyWeight tag
+git show <tag name>                                # Show tag info
+
+
+
+###################### USING Github #####################################
+- Local repo exists, remote repo empty:
+git remote add origin URL                          # Connect
+                                                   # "origin" is alias of the URL
+ 
+git push                                           # Update remote repo with local one 
+git pull                                           # Get info from remote to local
+
+- Remote repo has data already:
+git clone                                          # Clone remote repo to local machine
+git push                                           # Update back to remote
+git pull
+
+- Example:
+git remote add origin https://github.com/nemesis5324/github-basics.git
+git push origin master                                                      #
+git push origin <branch name>                                               # Push local branch to remote tracking branch    
+git push -u origin <local branch name>                                      # This also add the local tracking branch  !!!                                      
+  
+git ls-remote                                                               # Show all remote branches on Github
+
+git fetch origin            # Update remote tracking branch
+git pull origin master      # git pull = git fetch + git merge (add changes to local branch)
+
+- How to create local tracking branch:
+# Example:
+git branch -a
+
+#* feature
+#  master
+#  remotes/origin/feature
+#  remotes/origin/master
+#  remotes/origin/new-br
+
+git branch --track new-br origin/new-br             # Create local tracking branch !!!
+git remote show origin                              # Show the URL of the remote repo
+git branch -vv                                      # Show local branch with their remote
+
+Typical work flow: clone -> git branch --track...
+
+- How to delete remote tracking branch:
+step1:
+git branch --delete --remotes origin/feature        # Delete local tracking branch
+
+step2:
+git push origin --delete feature                    # Delete remote tracking branch
+
+
+
+
+
+
